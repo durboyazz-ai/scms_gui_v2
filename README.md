@@ -41,10 +41,10 @@ python app.py
 ## Demo Screenshots
 
 ### Dashboard — Attentive
-![Dashboard Attentive](assets/screenshots/Screenshot 2026-01-09 022656.png)
+![Dashboard Attentive](assets/screenshots/Screenshot_2026-01-09_022656.png)
 
 ### Dashboard — Distracted
-![Dashboard Distracted](assets/screenshots/Screenshot 2026-01-09 022734.png)
+![Dashboard Distracted](assets/screenshots/Screenshot_2026-01-09_022734.png)
 
 ### Concentration Over Time
 ![Concentration Plot](assets/screenshots/scms_session_20260109_022748_concentration.png)
