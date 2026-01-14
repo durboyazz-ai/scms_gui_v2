@@ -41,16 +41,16 @@ python app.py
 ## Demo Screenshots
 
 ### Dashboard — Attentive
-![Dashboard Attentive](assets/screenshots/dashboard_attentive.png)
+![Dashboard Attentive](assets/screenshots/Screenshot 2026-01-09 022656.png)
 
 ### Dashboard — Distracted
-![Dashboard Distracted](assets/screenshots/dashboard_distracted.png)
+![Dashboard Distracted](assets/screenshots/Screenshot 2026-01-09 022734.png)
 
 ### Concentration Over Time
-![Concentration Plot](assets/screenshots/concentration_over_time.png)
+![Concentration Plot](assets/screenshots/scms_session_20260109_022748_concentration.png)
 
 ### Attention State Timeline
-![State Timeline](assets/screenshots/state_timeline.png)
+![State Timeline](assets/screenshots/scms_session_20260109_022748_state.png)
 
 ---
 
