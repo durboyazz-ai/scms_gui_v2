@@ -1,7 +1,7 @@
 # scms_gui_v2
 
 ### 1. **Student Concentration Monitoring System (SCMS)**
-# 🧠 Student Concentration Monitoring System (SCMS) — Flask + OpenCV
+# 🧠 Student Concentration Monitoring System (SCMS) — Flask Dashboard + OpenCV
 
 SCMS is a real-time student attention monitoring system designed for online learning and self-study sessions.  
 It runs locally using a standard webcam and provides a live dashboard showing:
@@ -18,15 +18,15 @@ This project uses computer vision and machine learning to track and analyze a st
 
 ## 📌 Features
 - Real-time webcam input using OpenCV
-- Face and eye detection using Dlib
+- Face detection + facial landmarks using OpenCV Facemark (LBF)
 - Alert system for inattention
-- Custom ML model for attention classification
+- Calibrated attention logic (head pose + gaze + EAR) with smoothing
 
 ## 🛠 Tech Stack
 - Python
 - OpenCV
-- Dlib
-- Scikit-learn
+- OpenCV Facemark (LBF)
+- Pandas + Matplotlib (logging & plots)
 - NumPy
 
 
@@ -86,7 +86,8 @@ This project uses an OpenCV Facemark LBF model file:
 
 Please download it separately and place it in the **same directory as `app.py`**.
 
-Your `.gitignore` already prevents this file from being uploaded.
+> Note: Facial landmarks use OpenCV Facemark LBF (`lbfmodel.yaml`).  
+> The model file is not included in the repo; place it beside `app.py`.
 
 ---
 
