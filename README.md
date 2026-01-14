@@ -36,15 +36,6 @@ pip install -r requirements.txt
 python app.py
 ```
 
-📁 Project Structure
-
-monitor.py: Main script
-
-dataset/: Sample training data
-
-models/: Pre-trained attention model
-
-
 ---
 
 ## Demo Screenshots
@@ -122,49 +113,45 @@ Then open your browser at:
 http://127.0.0.1:5000
 ```
 
-How to Use
-Calibration
+## How to Use
 
-Sit normally and look directly at the screen
-
-Click Calibrate
-
-Wait until the status shows Calibration: Done
+### Calibration
+1. Sit normally and look directly at the screen  
+2. Click **Calibrate**  
+3. Wait until the status shows **Calibration: Done**
 
 Calibration personalizes the system and significantly improves accuracy.
 
-Session Logging
+---
 
-Click Start Session
-
-Perform a realistic test:
-
-Look at the screen (Attentive)
-
-Look away (Distracted)
-
-Return to the screen
-
-Click Stop Session
+### Session Logging
+1. Click **Start Session**
+2. Perform a realistic test:
+   - Look at the screen (**Attentive**)
+   - Look away (**Distracted**)
+   - Return to the screen
+3. Click **Stop Session**
 
 A CSV log file will be saved in:
+- `logs/ `
 
-logs/
+---
 
-Analyze Session Logs
+## Analyze Session Logs
 
-Generate concentration and state plots from a CSV log:
+Generate concentration and attention state plots from a CSV log:
 
+```powershell
 python analyze_log.py .\logs\scms_session_YYYYMMDD_HHMMSS.csv
+```
+### This produces:
 
+- Concentration-over-time plot
+- Attention state timeline plot
 
-This produces:
+---
 
-Concentration-over-time plot
-
-Attention state timeline plot
-
-Project Structure
+📁 Project Structure
 scms_gui_v2/
 - `│`
 - `├── app.py`                 # Flask app + webcam processing
