@@ -44,9 +44,6 @@ dataset/: Sample training data
 
 models/: Pre-trained attention model
 
-👨‍💻 Author
-Yassin Aboulnour ->
-
 
 ---
 
@@ -169,18 +166,19 @@ Attention state timeline plot
 
 Project Structure
 scms_gui_v2/
-│
-├── app.py                 # Flask app + webcam processing
-├── analyze_log.py         # CSV analysis and plotting
-├── scms/                  # Core attention logic and calibration
-├── templates/             # Dashboard HTML templates
-├── static/                # CSS and static assets
-├── assets/screenshots/    # README screenshots
-├── requirements.txt
-├── README.md
-├── LICENSE
-└── .gitignore
+- `│`
+- `├── app.py`                 # Flask app + webcam processing
+- `├── analyze_log.py`       # CSV analysis and plotting
+- `├── scms/`                  # Core attention logic and calibration
+- `├── templates/`             # Dashboard HTML templates
+- `├── static/`                # CSS and static assets
+- `├── assets/screenshots/`    # README screenshots
+- `├── requirements.txt`
+- `├── README.md`
+- `├── LICENSE`
+- `└── .gitignore`
 
-Authors
 
-Yassin Alaa Aboulnour
+👨‍💻 Author
+Yassin Aboulnour ->
+
