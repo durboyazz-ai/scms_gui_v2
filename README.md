@@ -1,8 +1,19 @@
 # scms_gui_v2
-Student Concentration Monitoring System (OpenCV + ML)
-### 1. **Student Attention Monitor (AI with OpenCV + ML)**
-# 🧠 AI Student Attention Monitor
 
+### 1. **Student Concentration Monitoring System (SCMS)**
+# 🧠 Student Concentration Monitoring System (SCMS) — Flask + OpenCV
+
+SCMS is a real-time student attention monitoring system designed for online learning and self-study sessions.  
+It runs locally using a standard webcam and provides a live dashboard showing:
+
+- Attention state (Attentive / Distracted / No Face)
+- Concentration score over time
+- Gaze direction (Center / Left / Right)
+- Head pose angles (Yaw / Pitch / Roll)
+- Fatigue detection using EAR (Eye Aspect Ratio)
+- Session logging to CSV and visual analysis plots
+
+> ✅ This repository contains the **working GUI demo** used in the graduation project presentation and discussion.
 This project uses computer vision and machine learning to track and analyze a student's eye activity and facial orientation to estimate attention span during online classes or work sessions.
 
 ## 📌 Features
@@ -18,13 +29,11 @@ This project uses computer vision and machine learning to track and analyze a st
 - Scikit-learn
 - NumPy
 
-## 📸 Demo
-![Screenshot](images/attention-monitor-screenshot.png)
 
 ## 🚀 How to Run
 ```bash
 pip install -r requirements.txt
-python monitor.py
+python app.py
 ```
 
 📁 Project Structure
@@ -38,21 +47,6 @@ models/: Pre-trained attention model
 👨‍💻 Author
 Yassin Aboulnour ->
 
-
-
-# Student Concentration Monitoring System (SCMS) — Flask + OpenCV
-
-SCMS is a real-time student attention monitoring system designed for online learning and self-study sessions.  
-It runs locally using a standard webcam and provides a live dashboard showing:
-
-- Attention state (Attentive / Distracted / No Face)
-- Concentration score over time
-- Gaze direction (Center / Left / Right)
-- Head pose angles (Yaw / Pitch / Roll)
-- Fatigue detection using EAR (Eye Aspect Ratio)
-- Session logging to CSV and visual analysis plots
-
-> ✅ This repository contains the **working GUI demo** used in the graduation project presentation and discussion.
 
 ---
 
@@ -118,14 +112,18 @@ py -m venv .venv
 python -m pip install --upgrade pip
 ```
 ### 2) Install dependencies
+```powershell
 pip install -r requirements.txt
-
+```
 ### 3) Run the application
+```powershell
 python app.py
-
+```
 
 Then open your browser at:
+```powershell
 http://127.0.0.1:5000
+```
 
 How to Use
 Calibration
