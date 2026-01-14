@@ -1,0 +1,185 @@
+
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>SCMS Dashboard</title>
+    <link rel="stylesheet" href="/static/style.css" />
+  </head>
+  <body>
+    <h1>Student Concentration Monitoring System (SCMS)</h1>
+    <div class="small">
+      Local demo dashboard · Webcam runs on this machine · Press <b>Start Session</b> to record a CSV log.
+    </div>
+
+    <div id="container">
+      <div class="card">
+        <img id="video" src="/video_feed" alt="Video feed" />
+        <div class="small" style="margin-top:8px;">
+          If video doesn't appear, make sure your camera is not used by another app.
+        </div>
+        <canvas id="chart" width="720" height="160"></canvas>
+        <div class="small" style="margin-top:8px;">
+          Concentration score history (last ~2-3 minutes depending on update rate).
+        </div>
+      </div>
+
+      <div class="card" style="min-width: 300px;">
+        <div style="display:flex; gap:10px; flex-wrap:wrap;">
+          <button onclick="startSession()">Start Session</button>
+          <button onclick="stopSession()">Stop Session</button>
+          <button onclick="calibrate()">Calibrate</button>
+        </div>
+        <hr/>
+
+        <div class="metric">State: <span class="value" id="label">--</span></div>
+        <div class="metric">Concentration: <span class="value" id="conc">--</span>%</div>
+        <div class="metric">Gaze: <span class="value" id="gaze">--</span></div>
+        <div class="metric">Fatigue: <span class="value" id="fatigue">--</span></div>
+
+        <hr/>
+
+        <div class="metric">Calibration: <span class="value" id="calibStatus">--</span></div>
+        <div class="metric">YawΔ: <span class="value" id="yawDelta">--</span></div>
+        <div class="metric">PitchΔ: <span class="value" id="pitchDelta">--</span></div>
+
+        <hr/>
+
+        <div class="metric">Pitch: <span class="value" id="pitch">--</span></div>
+        <div class="metric">Yaw: <span class="value" id="yaw">--</span></div>
+        <div class="metric">Roll: <span class="value" id="roll">--</span></div>
+        <div class="metric">EAR: <span class="value" id="ear">--</span></div>
+        <div class="metric">FPS: <span class="value" id="fps">--</span></div>
+
+        <hr/>
+
+        <div class="small">
+          Logging: <span id="logStatus">Not recording</span><br/>
+          Log file: <span id="logFile">--</span><br/>
+          <span id="downloadWrap" style="display:none;">
+            <a href="/download_log" target="_blank">Download latest log</a>
+          </span>
+        </div>
+
+        <hr/>
+        <div class="small" id="warnings"></div>
+      </div>
+    </div>
+
+    <script>
+      const maxPoints = 240;
+      const points = [];
+
+      function fmt(x, digits=1){
+        if (x === null || x === undefined) return "--";
+        if (typeof x === "number") return x.toFixed(digits);
+        return x;
+      }
+
+      function drawChart(){
+        const canvas = document.getElementById("chart");
+        const ctx = canvas.getContext("2d");
+
+        // background
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+        // grid
+        ctx.globalAlpha = 0.25;
+        ctx.beginPath();
+        for(let i=0;i<=4;i++){
+          const y = i * canvas.height / 4;
+          ctx.moveTo(0, y);
+          ctx.lineTo(canvas.width, y);
+        }
+        ctx.strokeStyle = "#666";
+        ctx.stroke();
+        ctx.globalAlpha = 1.0;
+
+        if(points.length < 2) return;
+
+        ctx.beginPath();
+        for(let i=0;i<points.length;i++){
+          const x = i * canvas.width / (maxPoints-1);
+          const y = canvas.height - (points[i] / 100) * canvas.height;
+          if(i===0) ctx.moveTo(x,y); else ctx.lineTo(x,y);
+        }
+        ctx.strokeStyle = "#7dd3fc";
+        ctx.lineWidth = 2;
+        ctx.stroke();
+      }
+
+      async function poll(){
+        try{
+          const res = await fetch("/metrics");
+          const data = await res.json();
+
+          document.getElementById("label").textContent = data.label ?? "--";
+          document.getElementById("conc").textContent = data.concentration ?? "--";
+          document.getElementById("gaze").textContent = data.gaze ?? "--";
+          document.getElementById("fatigue").textContent = data.fatigue ? "Yes" : "No";
+
+          // calibration status
+          const calibEl = document.getElementById("calibStatus");
+          if(data.calibrating){
+            calibEl.textContent = `In progress (${data.calib_progress ?? 0}/${data.calib_required ?? '?'})`;
+          } else if (data.baseline_yaw !== null && data.baseline_yaw !== undefined){
+            calibEl.textContent = "Done";
+          } else {
+            calibEl.textContent = "Not set";
+          }
+          document.getElementById("yawDelta").textContent = fmt(data.yaw_delta);
+          document.getElementById("pitchDelta").textContent = fmt(data.pitch_delta);
+
+          document.getElementById("pitch").textContent = fmt(data.pitch);
+          document.getElementById("yaw").textContent = fmt(data.yaw);
+          document.getElementById("roll").textContent = fmt(data.roll);
+          document.getElementById("ear").textContent = fmt(data.ear, 3);
+          document.getElementById("fps").textContent = fmt(data.fps);
+
+          if(typeof data.concentration === "number"){
+            points.push(data.concentration);
+            if(points.length > maxPoints) points.shift();
+            drawChart();
+          }
+
+          // logging status
+          document.getElementById("logStatus").textContent = data.logging?.active ? "Recording..." : "Not recording";
+          document.getElementById("logFile").textContent = data.logging?.file_path ?? "--";
+          document.getElementById("downloadWrap").style.display = data.logging?.file_path ? "inline" : "none";
+
+          // warnings
+          const warnings = [];
+          if(data.label === "Face Only"){
+            warnings.push("Landmarks are not running. Provide a landmark model file (OpenCV LBF or dlib 68 predictor).");
+          }
+          if(data.label === "No Face"){
+            warnings.push("No face detected. Adjust lighting / camera angle.");
+          }
+          if(data.label === "Distracted" && (data.baseline_yaw === null || data.baseline_yaw === undefined) && !data.calibrating){
+            warnings.push("Tip: press Calibrate while looking at your screen to reduce bias.");
+          }
+          document.getElementById("warnings").textContent = warnings.join(" ");
+        } catch(e){
+          // ignore transient errors
+        }
+      }
+
+      setInterval(poll, 500);
+      poll();
+
+      async function startSession(){
+        await fetch("/start_session", {method: "POST"});
+        poll();
+      }
+      async function stopSession(){
+        await fetch("/stop_session", {method: "POST"});
+        poll();
+      }
+      async function calibrate(){
+        await fetch("/calibrate", {method: "POST"});
+        poll();
+      }
+    </script>
+  </body>
+</html>
