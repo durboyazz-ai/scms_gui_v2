@@ -201,6 +201,27 @@ cython_debug/
 .cursorignore
 .cursorindexingignore
 
+# SCMS generated outputs
+logs/
+*.csv
+*_concentration.png
+*_state.png
+
+# Model file (don’t upload unless license allows)
+lbfmodel.yaml
+
+# Python cache
+__pycache__/
+*.pyc
+
+# Virtual environments
+venv/
+.venv/
+env/
+
+# Jupyter
+.ipynb_checkpoints/
+
 # Marimo
 marimo/_static/
 marimo/_lsp/
